@@ -3,7 +3,7 @@ package com.rayin19.v2.pokemon.client;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
-import com.rayin19.v2.pokemon.Main;
+import com.rayin19.v2.pokemon.Pokemon;
 
 public class HtmlLauncher extends GwtApplication {
 
@@ -17,6 +17,6 @@ public class HtmlLauncher extends GwtApplication {
 
         @Override
         public ApplicationListener createApplicationListener () {
-                return new Main();
+                return new Pokemon();
         }
 }
