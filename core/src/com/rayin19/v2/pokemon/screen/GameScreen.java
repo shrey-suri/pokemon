@@ -1,34 +1,45 @@
 package com.rayin19.v2.pokemon.screen;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.rayin19.v2.pokemon.Pokemon;
+import com.rayin19.v2.pokemon.Settings;
+import com.rayin19.v2.pokemon.controller.PlayerController;
+import com.rayin19.v2.pokemon.model.Actor;
 
 public class GameScreen extends AbstractScreen{
 
+    private Actor player;
+    private PlayerController controller;
     private SpriteBatch batch;
-
-    private Texture player;
+    private Texture playerStandingSouth;
 
 
     public GameScreen(Pokemon app) {
         super(app);
 
-        player = new Texture("test_south_stand.png");
+        playerStandingSouth = new Texture("test_south_stand.png");
         batch = new SpriteBatch();
+        player = new Actor(0,0);
+        controller = new PlayerController(player);
     }
 
     @Override
     public void show() {
-
+        Gdx.input.setInputProcessor(controller);
     }
 
     @Override
     public void render(float delta) {
         ScreenUtils.clear(0,0,0,1);
         batch.begin();
-        batch.draw(player,0,0,20,35);
+        //Each tile is 20 pixel
+        batch.draw(playerStandingSouth,
+                player.getX()* Settings.SCALED_TILE_SIZE,
+                player.getY()*Settings.SCALED_TILE_SIZE,
+                Settings.SCALED_TILE_SIZE, Settings.SCALED_TILE_SIZE*(1.5f));
         batch.end();
 
     }
@@ -56,6 +67,6 @@ public class GameScreen extends AbstractScreen{
     @Override
     public void dispose() {
         batch.dispose();
-        player.dispose();
+        playerStandingSouth.dispose();
     }
 }
