@@ -8,12 +8,14 @@ import com.rayin19.v2.pokemon.Pokemon;
 import com.rayin19.v2.pokemon.Settings;
 import com.rayin19.v2.pokemon.controller.PlayerController;
 import com.rayin19.v2.pokemon.model.Actor;
+import com.rayin19.v2.pokemon.model.Camera;
 import com.rayin19.v2.pokemon.model.TileMap;
 
 public class GameScreen extends AbstractScreen{
 
     private Actor player;
     private TileMap map;
+    private Camera camera;
     private PlayerController controller;
     private SpriteBatch batch;
     private Texture playerStandingSouth;
@@ -29,6 +31,7 @@ public class GameScreen extends AbstractScreen{
         map = new TileMap(10,10);
         player = new Actor(map,0,0);
         controller = new PlayerController(player);
+        camera = new Camera();
     }
 
     @Override
@@ -41,12 +44,16 @@ public class GameScreen extends AbstractScreen{
         ScreenUtils.clear(0,0,0,1);
         batch.begin();
 
+        camera.update(player.getX() + 0.5f, player.getY() + 0.5f);
+        float worldStartX = Gdx.graphics.getWidth()/2 - camera.getCameraX()*Settings.SCALED_TILE_SIZE;
+        float worldStartY = Gdx.graphics.getHeight()/2 - camera.getCameraY()*Settings.SCALED_TILE_SIZE;
+
         for (int x = 0; x < map.getWidth(); x++) {
             for (int y = 0; y < map.getHeight(); y++) {
                 batch.draw(
                         grass,
-                        x*Settings.SCALED_TILE_SIZE,
-                        y*Settings.SCALED_TILE_SIZE,
+                        worldStartX+x*Settings.SCALED_TILE_SIZE,
+                        worldStartY+y*Settings.SCALED_TILE_SIZE,
                         Settings.SCALED_TILE_SIZE,
                         Settings.SCALED_TILE_SIZE
                 );
@@ -54,8 +61,8 @@ public class GameScreen extends AbstractScreen{
         }
         //Each tile is 20 pixel
         batch.draw(playerStandingSouth,
-                player.getX()* Settings.SCALED_TILE_SIZE,
-                player.getY()*Settings.SCALED_TILE_SIZE,
+                worldStartX+player.getX()* Settings.SCALED_TILE_SIZE,
+                worldStartY+player.getY()*Settings.SCALED_TILE_SIZE,
                 Settings.SCALED_TILE_SIZE, Settings.SCALED_TILE_SIZE*(1.5f));
         batch.end();
 
